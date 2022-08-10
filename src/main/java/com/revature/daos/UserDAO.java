@@ -16,4 +16,6 @@ public interface UserDAO {
 	
 	public abstract int countUser();
 	
+	public abstract void updateUser(User user);
+	
 }

@@ -15,13 +15,14 @@ public class User {
 		super();
 	}
 
-	public User(int userID, String username, String password, int bankValue, int points) {
+	public User(int userID, String username, String password, int bankValue, int points, String userRole) {
 		super();
 		this.userID = userID;
 		this.username = username;
 		this.password = password;
 		this.bankValue = bankValue;
 		this.points = points;
+		this.userRole = userRole;
 	}
 
 	public void setUserID(int userID) {

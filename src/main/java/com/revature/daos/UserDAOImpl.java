@@ -22,7 +22,7 @@ public class UserDAOImpl implements UserDAO {
 			if (result.next()) {
 				User user = new User(result.getInt("user_id"), result.getString("user_name"),
 						result.getString("user_password"), result.getInt("user_bankValue"),
-						result.getInt("user_points"));
+						result.getInt("user_points"), result.getString("user_role"));
 				return user;
 			}
 		} catch (SQLException e) {
@@ -41,7 +41,7 @@ public class UserDAOImpl implements UserDAO {
 			while (result.next()) {
 				User user = new User(result.getInt("user_id"), result.getString("user_name"),
 						result.getString("user_password"), result.getInt("user_bankValue"),
-						result.getInt("user_points"));
+						result.getInt("user_points"), result.getString("user_role"));
 				userList.add(user);
 			}
 			return userList;
@@ -68,7 +68,7 @@ public class UserDAOImpl implements UserDAO {
 		}
 
 	}
-	
+
 	@Override
 	public int countUser() {
 		try (Connection connection = ConnectionUtil.getConnection()) {
@@ -84,7 +84,7 @@ public class UserDAOImpl implements UserDAO {
 		}
 		return 0;
 	}
-	
+
 	public static void main(String[] args) {
 		UserDAO userDAO = new UserDAOImpl();
 //		User user = userDAO.getUserById(1);
@@ -100,7 +100,9 @@ public class UserDAOImpl implements UserDAO {
 //		user.setPoints(5);
 //		userDAO.insertUser(user);
 //		System.out.println(userDAO.countUser());;
-		System.out.println(userDAO.getUserByUsername("DemoDisk"));
+		User user = userDAO.getUserById(2);
+		user.setUsername("Demo Disk");
+		userDAO.updateUser(user);
 	}
 
 	@Override
@@ -112,7 +114,7 @@ public class UserDAOImpl implements UserDAO {
 			if (result.next()) {
 				User user = new User(result.getInt("user_id"), result.getString("user_name"),
 						result.getString("user_password"), result.getInt("user_bankValue"),
-						result.getInt("user_points"));
+						result.getInt("user_points"), result.getString("user_role"));
 				return user;
 			}
 		} catch (SQLException e) {
@@ -121,5 +123,18 @@ public class UserDAOImpl implements UserDAO {
 		return null;
 	}
 
+	@Override
+	public void updateUser(User user) {
+		try (Connection connection = ConnectionUtil.getConnection()) {
+			String sql = "Update users SET " + "user_name = '" + user.getUsername() + "', " + "user_password = '"
+					+ user.getPassword() + "', " + "user_bankValue = '" + user.getBankValue() + "', "
+					+ "user_points = '" + user.getPoints() + "' WHERE user_id = " + user.getUserID() + ";";
+			Statement statement = connection.createStatement();
+			statement.execute(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
 
 }

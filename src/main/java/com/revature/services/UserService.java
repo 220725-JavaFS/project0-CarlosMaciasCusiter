@@ -34,7 +34,7 @@ public class UserService {
 			return user;
 		} else {
 			System.out.println("you did not enter valid credentials");
-			return user;
+			return null;
 		}
 	}
 

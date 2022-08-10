@@ -19,7 +19,7 @@ public class Player {
 	}
 
 	public Player(int playerID, String firstName, String lastName, String position, int salary, boolean isBuyable,
-			boolean isInjured, User user) {
+			boolean isInjured, User user, String team) {
 		super();
 		this.playerID = playerID;
 		this.firstName = firstName;
@@ -29,6 +29,7 @@ public class Player {
 		this.isBuyable = isBuyable;
 		this.isInjured = isInjured;
 		this.user = user;
+		this.team = team;
 	}
 
 	public int getPlayerID() {

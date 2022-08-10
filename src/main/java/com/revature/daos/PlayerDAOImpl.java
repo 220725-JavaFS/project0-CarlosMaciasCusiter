@@ -24,7 +24,7 @@ public class PlayerDAOImpl implements PlayerDAO {
 				Player player = new Player(result.getInt("player_id"), result.getString("player_firstName"),
 						result.getString("player_lastName"), result.getString("player_position"),
 						result.getInt("player_salary"), result.getBoolean("player_isBuyable"),
-						result.getBoolean("player_isInjured"), null);
+						result.getBoolean("player_isInjured"), null, result.getString("player_team"));
 				int userID_fKey = result.getInt("FK_userID");
 				if (userID_fKey != 0) {
 					UserDAO userDao = new UserDAOImpl();
@@ -45,7 +45,7 @@ public class PlayerDAOImpl implements PlayerDAO {
 		try (Connection connection = ConnectionUtil.getConnection()) {
 			String sql = "INSERT INTO players " + "(player_firstName, player_lastName, player_position, "
 					+ "player_salary, player_isBuyable, player_isInjured, FK_userID, player_team)"
-					+ " Values (?, ?, ?, ?, ?, ?, ?);";
+					+ " Values (?, ?, ?, ?, ?, ?, ?, ?);";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			int count = 0;
 			statement.setString(++count, player.getFirstName());
@@ -54,12 +54,13 @@ public class PlayerDAOImpl implements PlayerDAO {
 			statement.setInt(++count, player.getSalary());
 			statement.setBoolean(++count, player.isBuyable());
 			statement.setBoolean(++count, player.isInjured());
-			statement.setString(++count, player.getTeam());
+
 			if (player.getUser() != null) {
 				statement.setInt(++count, player.getUser().getUserID());
 			} else {
-				statement.setInt(++count, 0);
+				statement.setInt(++count, 1);
 			}
+			statement.setString(++count, player.getTeam());
 			statement.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -100,7 +101,8 @@ public class PlayerDAOImpl implements PlayerDAO {
 							result.getInt("player_salary"),
 							result.getBoolean("player_isBuyable"),
 							result.getBoolean("player_isInjured"),
-							null
+							null,
+							result.getString("player_team")
 						);
 				int userID = result.getInt("FK_userID");
 				if(userID!=0) {
@@ -149,9 +151,10 @@ public class PlayerDAOImpl implements PlayerDAO {
 	public static void main(String[] args) {
 		UserDAO userDAO = new UserDAOImpl();
 		PlayerDAO playerDAO = new PlayerDAOImpl();
-		User user = userDAO.getUserById(2);
-		System.out.println(playerDAO.getAvailablePlayers());
-//		Player player = playerDAO.getPlayerById(2);
+//		User user = userDAO.getUserById(2);
+//		System.out.println(playerDAO.getAvailablePlayers());
+		Player player = playerDAO.getPlayerById(2);
+		System.out.println(player);
 //		player.setFirstName("Stephen");
 //		player.setLastName("Curry");
 //		playerDAO.updatePlayer(player);

@@ -17,7 +17,6 @@ public class CredentialsControllers {
 		String username = scanner.nextLine();
 		System.out.println("Pleases enter your password:");
 		String password = scanner.nextLine();
-
 		if (choice.equals("2")) {
 			User user = userService.registerUser(username, password);
 			return user;
